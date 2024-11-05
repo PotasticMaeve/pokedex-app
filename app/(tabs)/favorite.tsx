@@ -1,15 +1,15 @@
 import Navbar from "@/components/Navbar";
-import CardList from "@/components/CardList";
-import SearchInput from "@/components/SearchInput";
-import Feather from "@expo/vector-icons/Feather";
-import { StatusBar, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/native-stack/types";
 import { TabNavigatorParamList } from "@/components/navigation/types";
+import CardList from "@/components/CardList";
 
-export default function HomeScreen() {
+export default function Favorite() {
   const navigation =
     useNavigation<NativeStackNavigationProp<TabNavigatorParamList>>();
+
   const data = [
     {
       name: "data 1",
@@ -39,17 +39,13 @@ export default function HomeScreen() {
   ];
 
   return (
-    <View>
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
-      <View style={styles.navbarWrap}>
-        <Navbar
-          text="Pokedex"
-          rightIcon={<Feather name="heart" size={24} color="black" />}
-          onRightIconPress={() => navigation.navigate("favorite")}
-        />
-      </View>
-      <View style={styles.bodyWrap}>
-        <SearchInput />
+    <View style={styles.favoriteWrap}>
+      <Navbar
+        text="Favorite Pokemon"
+        leftIcon={<MaterialIcons name="arrow-back" size={28} color="black" />}
+        onLeftIconPress={() => navigation.goBack()}
+      />
+      <View style={styles.favoriteBodyWrap}>
         <CardList data={data} />
       </View>
     </View>
@@ -57,10 +53,11 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  navbarWrap: {
+  favoriteWrap: {
     marginTop: 30,
   },
-  bodyWrap: {
+  favoriteBodyWrap: {
+    paddingVertical: 10,
     backgroundColor: "white",
   },
 });
