@@ -1,22 +1,38 @@
-import React, { useState } from "react";
+import React, { useCallback } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { StyleSheet, TextInput, View } from "react-native";
+import debounce from "lodash.debounce";
 
 const SearchInput = () => {
-  const [searchVal, setSearchVal] = useState("");
+  const { control } = useForm();
 
-  const handleSearch = (text: string) => {
-    setSearchVal(text);
-  };
+  const debouncedSearch = useCallback(
+    debounce((value: string) => {
+      console.log("Search value submitted:", value);
+    }, 500),
+    []
+  );
+
   return (
     <View style={styles.searchWrap}>
-      <TextInput
-        value={searchVal}
-        spellCheck={false}
-        autoCorrect={false}
-        autoCapitalize="none"
-        placeholder="Search by name..."
-        style={styles.searchInput}
-        onChangeText={handleSearch}
+      <Controller
+        name="search"
+        control={control}
+        render={({ field: { onChange, value, onBlur } }) => (
+          <TextInput
+            spellCheck={false}
+            autoCorrect={false}
+            value={value}
+            onChangeText={(text) => {
+              debouncedSearch(text);
+              onChange(text);
+            }}
+            onBlur={onBlur}
+            autoCapitalize="none"
+            placeholder="Search by name..."
+            style={styles.searchInput}
+          />
+        )}
       />
     </View>
   );
@@ -36,4 +52,3 @@ const styles = StyleSheet.create({
 });
 
 export default SearchInput;
-

@@ -1,22 +1,27 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { TabNavigatorParamList } from "./navigation/types";
-import { PokemonData } from "./CardList";
+import { PokemonDetails } from "@/types";
 
-interface CardItemProps {
-  data: PokemonData;
-}
- 
+type CardItemProps = {
+  data: PokemonDetails;
+};
+
 const CardItem = (props: CardItemProps) => {
   const {
-    data: { name, image },
+    data: {
+      name,
+      sprites: { front_default },
+      id
+    },
   } = props;
-  const navigation = useNavigation<NativeStackNavigationProp<TabNavigatorParamList>>();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<TabNavigatorParamList>>();
 
   const handleCardPress = () => {
-    navigation.navigate('detail');
+    navigation.navigate("detail", { id });
   };
 
   return (
@@ -26,7 +31,7 @@ const CardItem = (props: CardItemProps) => {
           style={styles.cardImage}
           alt="pokemon-image"
           source={{
-            uri: image,
+            uri: front_default,
           }}
         />
       </View>
@@ -57,8 +62,8 @@ const styles = StyleSheet.create({
   cardTextWrap: {
     position: "absolute",
     left: 10,
+    right: 10,
     bottom: 10,
-    width: "100%",
     display: "flex",
     alignItems: "center",
   },

@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 
-interface NavbarProps {
+type NavbarProps = {
   leftIcon?: JSX.Element;
   text?: string;
   rightIcon?: JSX.Element;

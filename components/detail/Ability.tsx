@@ -1,12 +1,14 @@
+import { Abilities } from "@/types";
 import React from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
-interface AbilityProps {
-  data: string[];
+type AbilityProps = {
+  data: Abilities[];
 }
 
 const Ability = (props: AbilityProps) => {
   const { data } = props;
+  
   return (
     <View style={styles.abilityWrap}>
       <Text style={styles.abilityTitle}>Abilities</Text>
@@ -15,7 +17,7 @@ const Ability = (props: AbilityProps) => {
         numColumns={1}
         renderItem={({ item, index }) => {
           return (
-            <Text style={styles.abilityTextItem} key={index}>{item}</Text>
+            <Text style={styles.abilityTextItem} key={index}>{item.ability.name}</Text>
           );
         }}
         keyExtractor={(_, index) => index.toString()}

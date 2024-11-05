@@ -2,23 +2,25 @@ import Feather from "@expo/vector-icons/Feather";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { PokemonData } from "../CardList";
+import { PokemonDetails } from "@/types";
 
-const Info = (props: PokemonData) => {
+const Info = (props: PokemonDetails) => {
   const [activeFavorite, setActiveFavorite] = useState(false);
-  const { name, image } = props
+  const { name, sprites } = props;
 
   const handlePress = () => setActiveFavorite(!activeFavorite);
   return (
     <View>
       <View style={styles.detailImageWrap}>
-        <Image
-          style={styles.detailImage}
-          alt="pokemon-image-detail"
-          source={{
-            uri: image,
-          }}
-        />
+        {sprites.front_default && (
+          <Image
+            style={styles.detailImage}
+            alt="pokemon-image-detail"
+            source={{
+              uri: sprites.front_default,
+            }}
+          />
+        )}
       </View>
       <View style={styles.infoWrap}>
         <Text style={styles.infoText}>{name}</Text>
@@ -54,6 +56,7 @@ const styles = StyleSheet.create({
   infoText: {
     fontWeight: "700",
     fontSize: 36,
+    textTransform: "capitalize",
   },
 });
 export default Info;

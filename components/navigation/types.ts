@@ -1,5 +1,5 @@
 export type TabNavigatorParamList = {
     index: undefined;
-    detail: undefined;
+    detail: { id: number };
     favorite: undefined;
 };

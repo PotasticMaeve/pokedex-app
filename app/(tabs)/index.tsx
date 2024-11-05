@@ -1,42 +1,15 @@
-import Navbar from "@/components/Navbar";
 import CardList from "@/components/CardList";
+import Navbar from "@/components/Navbar";
 import SearchInput from "@/components/SearchInput";
-import Feather from "@expo/vector-icons/Feather";
-import { StatusBar, StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/native-stack/types";
 import { TabNavigatorParamList } from "@/components/navigation/types";
+import Feather from "@expo/vector-icons/Feather";
+import { useNavigation } from "@react-navigation/native";
+import { StatusBar, StyleSheet, View } from "react-native";
+import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/native-stack/types";
 
 export default function HomeScreen() {
   const navigation =
     useNavigation<NativeStackNavigationProp<TabNavigatorParamList>>();
-  const data = [
-    {
-      name: "data 1",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png",
-    },
-    {
-      name: "data 2",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png",
-    },
-    {
-      name: "data 3",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png",
-    },
-    {
-      name: "data 4",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png",
-    },
-    {
-      name: "data 5",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png",
-    },
-  ];
 
   return (
     <View>
@@ -50,7 +23,7 @@ export default function HomeScreen() {
       </View>
       <View style={styles.bodyWrap}>
         <SearchInput />
-        <CardList data={data} />
+        <CardList />
       </View>
     </View>
   );

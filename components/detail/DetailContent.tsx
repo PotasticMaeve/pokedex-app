@@ -1,30 +1,26 @@
+import { PokemonDetails } from "@/types";
 import React from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList } from "react-native";
 import Ability from "./Ability";
 import Info from "./Info";
 import SpriteList from "./SpriteList";
-import { PokemonData } from "../CardList";
 
-interface DetailContentProps {
-  data: {
-    info: PokemonData;
-    sprite: string[];
-    ability: string[];
-  };
-}
+type DetailContentProps = {
+  data: PokemonDetails;
+};
 
 const DetailContent = (props: DetailContentProps) => {
   const { data } = props;
   const sections = ["info", "sprite", "ability"];
 
-  const renderContent = ({ item, index }: { item: string; index: number }) => {
-    switch (index) {
-      case 0:
-        return <Info {...data.info} />;
-      case 1:
-        return <SpriteList data={data.sprite} />;
-      case 2:
-        return <Ability data={data.ability} />;
+  const renderContent = ({ item }: { item: string }) => {
+    switch (item) {
+      case "info":
+        return <Info {...data} />;
+      case "sprite":
+        return <SpriteList data={data.sprites} />;
+      case "ability":
+        return <Ability data={data.abilities} />;
       default:
         return null;
     }
@@ -38,6 +34,5 @@ const DetailContent = (props: DetailContentProps) => {
     />
   );
 };
-const styles = StyleSheet.create({});
 
 export default DetailContent;
