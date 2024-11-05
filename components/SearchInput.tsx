@@ -1,17 +1,36 @@
-import React, { useCallback } from "react";
+import { Pokemon } from "@/types";
+import debounce from "lodash.debounce";
+import React, { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { StyleSheet, TextInput, View } from "react-native";
-import debounce from "lodash.debounce";
 
-const SearchInput = () => {
+type SearchInputProps = {
+  pokemons: Pokemon[];
+  setFilteredPokemons: (data: Pokemon[]) => void;
+};
+
+const SearchInput = (props: SearchInputProps) => {
+  const { pokemons, setFilteredPokemons } = props;
   const { control } = useForm();
+  const [search, setSearch] = useState("");
 
   const debouncedSearch = useCallback(
     debounce((value: string) => {
-      console.log("Search value submitted:", value);
+      setSearch(value);
     }, 500),
     []
   );
+
+  useEffect(() => {
+    if (search && pokemons?.length > 0) {
+      const matchData = pokemons?.filter((pokemon) =>
+        pokemon.name.toLowerCase()?.includes(search.toLowerCase())
+      );
+      setFilteredPokemons(matchData);
+    } else {
+      setFilteredPokemons(pokemons);
+    }
+  }, [search, pokemons]);
 
   return (
     <View style={styles.searchWrap}>

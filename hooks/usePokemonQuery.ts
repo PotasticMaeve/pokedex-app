@@ -31,7 +31,7 @@ export const usePokemonQuery = () => {
     });
 
     return {
-        pokemons: data?.results,
+        pokemons: data?.results || [],
         isLoading,
         isError,
         error,
