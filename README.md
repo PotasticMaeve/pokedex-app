@@ -2,7 +2,7 @@
 
 ## Overview
 
-The **Pokedex App** is a React Native mobile application that allows users to browse and search a list of Pokemon using data from [PokeAPI](https://pokeapi.co/). The app provides several key features such as displaying a list of Pokémon with their sprites and names, enabling users to search the list locally, view detailed Pokemon information, and toggle Pokemon items as favorites. Additionally, the app includes local storage functionality for saving favorited Pokemon using **react-native-mmkv**.
+The **Pokedex App** is a React Native mobile application that allows users to browse and search a list of Pokemon using data from [PokeAPI](https://pokeapi.co/). The app provides several key features such as displaying a list of Pokémon with their sprites and names, enabling users to search the list locally, view detailed Pokemon information, and toggle Pokemon items as favorites. Additionally, the app includes local storage functionality for saving favorited Pokemon using **react-native-async-storage**.
 
 ### Key Features:
 
@@ -21,7 +21,7 @@ The **Pokedex App** is a React Native mobile application that allows users to br
    
 4. **Favorites**  
    - Users can toggle a Pokemon as a favorite by pressing a heart icon.
-   - Favorited Pokemon are saved in local storage on the device using **react-native-mmkv**.
+   - Favorited Pokemon are saved in local storage on the device using **react-native-async-storage**.
    
 5. **View Lists of Favorite Pokemon**  
    - Users can view a list of their favorite Pokemon and tap an item to view its details.
@@ -53,3 +53,7 @@ npm install
 npm run android
 ```
 
+## Run Tests
+```bash
+yarn test
+```

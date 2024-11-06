@@ -30,7 +30,7 @@ export default function Detail() {
     <View style={styles.detailWrap}>
       <Navbar
         text="Pokemon Detail"
-        leftIcon={<MaterialIcons name="arrow-back" size={28} color="black" />}
+        leftIcon={<MaterialIcons name="arrow-back" testID="left-icon" size={28} color="black" />}
         onLeftIconPress={() => navigation.goBack()}
       />
       <View style={styles.detailBodyWrap}>

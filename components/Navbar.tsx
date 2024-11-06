@@ -27,7 +27,7 @@ const Navbar = (props: NavbarProps) => {
   return (
     <SafeAreaView style={styles.navbarWrap}>
       {leftIcon ? (
-        <TouchableOpacity onPress={onLeftIconPress}>
+        <TouchableOpacity testID="left-icon" onPress={onLeftIconPress}>
           {leftIcon}
         </TouchableOpacity>
       ) : (
@@ -35,7 +35,7 @@ const Navbar = (props: NavbarProps) => {
       )}
       <Text style={styles.navbarText}>{text}</Text>
       {rightIcon ? (
-        <TouchableOpacity onPress={onRightIconPress}>
+        <TouchableOpacity testID="right-icon" onPress={onRightIconPress}>
           {rightIcon}
         </TouchableOpacity>
       ) : (

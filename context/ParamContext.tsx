@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
-interface ParamContextType {
+type ParamContextType = {
   limit: number;
   setLimit: React.Dispatch<React.SetStateAction<number>>;
 }

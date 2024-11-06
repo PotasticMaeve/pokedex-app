@@ -37,7 +37,10 @@ const Info = (props: InfoProps) => {
       </View>
       <View style={styles.infoWrap}>
         <Text style={styles.infoText}>{name}</Text>
-        <TouchableOpacity onPress={handlePress}>
+        <TouchableOpacity
+          onPress={handlePress}
+          testID={isFavorite(id) ? "heart-full" : "heart-outline"}
+        >
           {isFavorite(id) ? (
             <FontAwesome name="heart" size={24} color="black" />
           ) : (

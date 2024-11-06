@@ -13,7 +13,7 @@ const CardItem = (props: CardItemProps) => {
   const {
     data: {
       name,
-      sprites: { front_default },
+      sprites,
       id,
     },
   } = props;
@@ -25,14 +25,15 @@ const CardItem = (props: CardItemProps) => {
   };
 
   return (
-    <TouchableOpacity style={styles.cardItemWrap} onPress={handleCardPress}>
-      {front_default && (
+    <TouchableOpacity style={styles.cardItemWrap} testID="card-item" onPress={handleCardPress}>
+      {sprites?.front_default && (
         <View style={styles.cardImageWrap}>
           <Image
+            testID="pokemon-image"
             style={styles.cardImage}
             alt="pokemon-image"
             source={{
-              uri: front_default,
+              uri: sprites.front_default,
             }}
           />
         </View>

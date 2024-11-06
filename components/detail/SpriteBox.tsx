@@ -8,8 +8,9 @@ type SpriteBoxProps = {
 const SpriteBox = (props: SpriteBoxProps) => {
   const { image } = props
   return (
-    <View style={styles.spriteBoxWrap}>
+    <View style={styles.spriteBoxWrap} testID="sprite-box">
       <Image
+        testID="pokemon-image-sprite"
         style={styles.spriteImage}
         alt="pokemon-image-sprite"
         source={{
