@@ -10,19 +10,21 @@ const itemWidth = (width - 10) / 2;
 type CardListProps = {
   pokemons: Pokemon[];
   pokemonDetailsQueries: any;
-  setLimit: React.Dispatch<React.SetStateAction<number>>;
+  setLimit?: React.Dispatch<React.SetStateAction<number>>;
   isLoading: boolean;
+  showLoadMore: boolean;
 };
 
 const CardList = (props: CardListProps) => {
-  const { pokemons, pokemonDetailsQueries, setLimit, isLoading } = props;
+  const { pokemons, pokemonDetailsQueries, setLimit, isLoading, showLoadMore } = props;
   const flatListRef = useRef<FlatList>(null);
   const [activeLoadMore, setActiveLoadMore] = useState(false);
   const { search } = useSearch();
+  const showButton = showLoadMore && !search && pokemons?.length > 0
 
   const loadMorePokemons = () => {
     setActiveLoadMore(true);
-    setLimit((prevLimit) => prevLimit + 10);
+    setLimit && setLimit((prevLimit) => prevLimit + 10);
   };
 
   useEffect(() => {
@@ -66,7 +68,7 @@ const CardList = (props: CardListProps) => {
       keyExtractor={(_, index) => index.toString()}
       ListFooterComponent={
         <View style={styles.buttonContainer}>
-          {!search && pokemons?.length > 0 && (
+          {showButton && (
             <Button
               title={isLoading ? "Loading..." : "Load More"}
               onPress={loadMorePokemons}

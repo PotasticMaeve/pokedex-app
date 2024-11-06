@@ -2,7 +2,7 @@ import CardList from "@/components/CardList";
 import Navbar from "@/components/Navbar";
 import SearchInput from "@/components/SearchInput";
 import { TabNavigatorParamList } from "@/components/navigation/types";
-import { SearchProvider } from "@/context/SearchContext";
+import { useParams } from "@/context/ParamContext";
 import { usePokemonQuery } from "@/hooks/usePokemonQuery";
 import { Pokemon } from "@/types";
 import Feather from "@expo/vector-icons/Feather";
@@ -14,7 +14,7 @@ import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/n
 export default function HomeScreen() {
   const navigation =
     useNavigation<NativeStackNavigationProp<TabNavigatorParamList>>();
-  const [limit, setLimit] = useState<number>(10);
+  const { limit, setLimit } = useParams();
   const { pokemons, isLoading, isError, error, pokemonDetailsQueries } =
     usePokemonQuery(limit);
   const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]);
@@ -26,7 +26,7 @@ export default function HomeScreen() {
   }, [isLoading, pokemons]);
 
   return (
-    <SearchProvider>
+    <View>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
       <View style={styles.navbarWrap}>
         <Navbar
@@ -45,9 +45,10 @@ export default function HomeScreen() {
           pokemonDetailsQueries={pokemonDetailsQueries}
           setLimit={setLimit}
           isLoading={isLoading}
+          showLoadMore={true}
         />
       </View>
-    </SearchProvider>
+    </View>
   );
 }
 
