@@ -5,15 +5,23 @@ import { PokemonApiResponse, PokemonDetails } from '../types';
 const baseUrl = 'https://pokeapi.co/api/v2/pokemon'
 
 const fetchPokemons = async (limit: number): Promise<PokemonApiResponse> => {
-    const response = await axios.get<PokemonApiResponse>(
-        `${baseUrl}?limit=${limit}&offset=0`
-    );
-    return response.data;
+    try {
+        const response = await axios.get<PokemonApiResponse>(
+            `${baseUrl}?limit=${limit}&offset=0`
+        );
+        return response.data;
+    } catch (error) {
+        throw new Error('error fetching pokemons');
+    }
 };
 
 export const fetchPokemonDetails = async (id: number): Promise<PokemonDetails> => {
-    const response = await axios.get<PokemonDetails>(`${baseUrl}/${id}`);
-    return response.data;
+    try {
+        const response = await axios.get<PokemonDetails>(`${baseUrl}/${id}`);
+        return response.data;
+    } catch (error) {
+        throw new Error(`error fetching details for pokemon ID: ${id}`);
+    }
 };
 
 export const usePokemonQuery = (limit: number) => {
