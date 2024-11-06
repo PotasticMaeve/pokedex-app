@@ -17,7 +17,7 @@ const SearchInput = (props: SearchInputProps) => {
   const debouncedSearch = useCallback(
     debounce((value: string) => {
       setSearch(value);
-    }, 500),
+    }, 300),
     []
   );
 

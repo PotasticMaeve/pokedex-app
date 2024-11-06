@@ -4,12 +4,13 @@ import {
   Dimensions,
   FlatList,
   StyleSheet,
+  Text,
   View,
 } from "react-native";
 import CardItem from "./CardItem";
 import { Pokemon } from "@/types";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 const itemWidth = (width - 10) / 2;
 
 type CardListProps = {
@@ -19,6 +20,14 @@ type CardListProps = {
 
 const CardList = (props: CardListProps) => {
   const { pokemons, pokemonDetailsQueries } = props;
+
+  if (pokemons.length === 0) {
+    return (
+      <View style={styles.emptyStateWrap}>
+        <Text style={styles.emptyStateText}>No Pokemon found</Text>
+      </View>
+    );
+  }
 
   return (
     <FlatList
@@ -30,11 +39,9 @@ const CardList = (props: CardListProps) => {
         );
 
         const pokemonDetails = pokemonDetailsQuery?.data;
-        const isFetching = pokemonDetailsQuery?.isLoading;
-
         return (
           <View style={styles.cardItemWrap}>
-            {isFetching ? (
+            {!pokemonDetails ? (
               <View style={styles.loading}>
                 <ActivityIndicator size="small" color="blue" />
               </View>
@@ -53,6 +60,7 @@ const styles = StyleSheet.create({
   cardListWrap: {
     paddingHorizontal: 5,
     paddingBottom: 400,
+    minHeight: height,
   },
   cardItemWrap: {
     width: itemWidth,
@@ -63,6 +71,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
+  },
+  emptyStateWrap: {
+    height: height,
+    backgroundColor: "white",
+    marginTop: "75%",
+    alignItems: "center",
+  },
+  emptyStateText: {
+    fontSize: 15,
   },
 });
 

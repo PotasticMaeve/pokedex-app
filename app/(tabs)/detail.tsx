@@ -33,17 +33,15 @@ export default function Detail() {
         leftIcon={<MaterialIcons name="arrow-back" size={28} color="black" />}
         onLeftIconPress={() => navigation.goBack()}
       />
-      {data && (
-        <View style={styles.detailBodyWrap}>
-          {isLoading ? (
-            <View style={styles.loading}>
-              <ActivityIndicator size="large" color="blue" />
-            </View>
-          ) : (
-            <DetailContent data={data} />
-          )}
-        </View>
-      )}
+      <View style={styles.detailBodyWrap}>
+        {isLoading ? (
+          <View style={styles.loading}>
+            <ActivityIndicator size="large" color="blue" />
+          </View>
+        ) : (
+          data && <DetailContent data={data} />
+        )}
+      </View>
     </View>
   );
 }

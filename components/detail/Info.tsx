@@ -6,9 +6,12 @@ import { PokemonDetails } from "@/types";
 
 const Info = (props: PokemonDetails) => {
   const [activeFavorite, setActiveFavorite] = useState(false);
-  const { name, sprites } = props;
+  const { name, sprites, id } = props;
 
-  const handlePress = () => setActiveFavorite(!activeFavorite);
+  const handlePress = () => {
+    setActiveFavorite(!activeFavorite);
+    console.log(id);
+  };
   return (
     <View>
       <View style={styles.detailImageWrap}>

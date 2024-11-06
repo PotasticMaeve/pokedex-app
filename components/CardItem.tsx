@@ -14,7 +14,7 @@ const CardItem = (props: CardItemProps) => {
     data: {
       name,
       sprites: { front_default },
-      id
+      id,
     },
   } = props;
   const navigation =
@@ -26,15 +26,17 @@ const CardItem = (props: CardItemProps) => {
 
   return (
     <TouchableOpacity style={styles.cardItemWrap} onPress={handleCardPress}>
-      <View style={styles.cardImageWrap}>
-        <Image
-          style={styles.cardImage}
-          alt="pokemon-image"
-          source={{
-            uri: front_default,
-          }}
-        />
-      </View>
+      {front_default && (
+        <View style={styles.cardImageWrap}>
+          <Image
+            style={styles.cardImage}
+            alt="pokemon-image"
+            source={{
+              uri: front_default,
+            }}
+          />
+        </View>
+      )}
       <View style={styles.cardTextWrap}>
         <Text style={styles.cardText}>{name}</Text>
       </View>
