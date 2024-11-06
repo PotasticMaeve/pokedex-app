@@ -16,10 +16,10 @@ export const fetchPokemonDetails = async (id: number): Promise<PokemonDetails> =
     return response.data;
 };
 
-export const usePokemonQuery = (offset: number) => {
+export const usePokemonQuery = (limit: number) => {
     const { data, isLoading, isError, error } = useQuery({
-        queryKey: ['pokemons', offset],
-        queryFn: () => fetchPokemons(offset)
+        queryKey: ['pokemons', limit],
+        queryFn: () => fetchPokemons(limit)
     });
 
     const pokemonDetailsQueries = useQueries({

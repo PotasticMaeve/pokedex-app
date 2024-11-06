@@ -1,14 +1,8 @@
 import { Pokemon } from "@/types";
-import React from "react";
-import {
-  ActivityIndicator,
-  Button,
-  Dimensions,
-  FlatList,
-  StyleSheet,
-  View,
-} from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Dimensions, FlatList, StyleSheet, View } from "react-native";
 import CardItem from "./CardItem";
+import { useSearch } from "@/context/SearchContext";
 
 const { width, height } = Dimensions.get("window");
 const itemWidth = (width - 10) / 2;
@@ -22,21 +16,36 @@ type CardListProps = {
 
 const CardList = (props: CardListProps) => {
   const { pokemons, pokemonDetailsQueries, setLimit, isLoading } = props;
+  const flatListRef = useRef<FlatList>(null);
+  const [activeLoadMore, setActiveLoadMore] = useState(false);
+  const { search } = useSearch();
 
   const loadMorePokemons = () => {
+    setActiveLoadMore(true);
     setLimit((prevLimit) => prevLimit + 10);
   };
 
-  if (isLoading) {
-    return (
-      <View style={styles.loading}>
-        <ActivityIndicator size="large" color="blue" />
-      </View>
-    );
-  }
+  useEffect(() => {
+    if (search) {
+      setActiveLoadMore(false);
+    }
+  }, [search]);
+
+  const handleContentSizeChange = (
+    contentWidth: number,
+    contentHeight: number
+  ) => {
+    if (flatListRef.current && activeLoadMore) {
+      flatListRef.current.scrollToOffset({
+        animated: false,
+        offset: contentHeight,
+      });
+    }
+  };
 
   return (
     <FlatList
+      ref={flatListRef}
       data={pokemons}
       numColumns={2}
       renderItem={({ item, index }) => {
@@ -57,9 +66,16 @@ const CardList = (props: CardListProps) => {
       keyExtractor={(_, index) => index.toString()}
       ListFooterComponent={
         <View style={styles.buttonContainer}>
-          <Button title="Load More" onPress={loadMorePokemons} />
+          {!search && pokemons?.length > 0 && (
+            <Button
+              title={isLoading ? "Loading..." : "Load More"}
+              onPress={loadMorePokemons}
+              disabled={isLoading}
+            />
+          )}
         </View>
       }
+      onContentSizeChange={handleContentSizeChange}
     />
   );
 };
@@ -72,12 +88,6 @@ const styles = StyleSheet.create({
   cardItemWrap: {
     width: itemWidth,
     height: 200,
-  },
-  loading: {
-    display: "flex",
-    marginTop: "70%",
-    alignItems: "center",
-    height: height,
   },
   buttonContainer: {
     marginTop: 20,

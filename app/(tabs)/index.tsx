@@ -2,6 +2,7 @@ import CardList from "@/components/CardList";
 import Navbar from "@/components/Navbar";
 import SearchInput from "@/components/SearchInput";
 import { TabNavigatorParamList } from "@/components/navigation/types";
+import { SearchProvider } from "@/context/SearchContext";
 import { usePokemonQuery } from "@/hooks/usePokemonQuery";
 import { Pokemon } from "@/types";
 import Feather from "@expo/vector-icons/Feather";
@@ -25,7 +26,7 @@ export default function HomeScreen() {
   }, [isLoading, pokemons]);
 
   return (
-    <View>
+    <SearchProvider>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
       <View style={styles.navbarWrap}>
         <Navbar
@@ -46,7 +47,7 @@ export default function HomeScreen() {
           isLoading={isLoading}
         />
       </View>
-    </View>
+    </SearchProvider>
   );
 }
 

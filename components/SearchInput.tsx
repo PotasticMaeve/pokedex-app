@@ -1,6 +1,7 @@
+import { useSearch } from "@/context/SearchContext";
 import { Pokemon } from "@/types";
 import debounce from "lodash.debounce";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { StyleSheet, TextInput, View } from "react-native";
 
@@ -12,7 +13,7 @@ type SearchInputProps = {
 const SearchInput = (props: SearchInputProps) => {
   const { pokemons, setFilteredPokemons } = props;
   const { control } = useForm();
-  const [search, setSearch] = useState("");
+  const { search, setSearch } = useSearch()
 
   const debouncedSearch = useCallback(
     debounce((value: string) => {
