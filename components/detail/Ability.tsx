@@ -4,20 +4,23 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 
 type AbilityProps = {
   data: Abilities[];
-}
+};
 
 const Ability = (props: AbilityProps) => {
   const { data } = props;
-  
+
   return (
     <View style={styles.abilityWrap}>
       <Text style={styles.abilityTitle}>Abilities</Text>
       <FlatList
+        testID="flat-list-ability"
         data={data}
         numColumns={1}
         renderItem={({ item, index }) => {
           return (
-            <Text style={styles.abilityTextItem} key={index}>{item.ability.name}</Text>
+            <Text style={styles.abilityTextItem} key={index}>
+              {item.ability.name}
+            </Text>
           );
         }}
         keyExtractor={(_, index) => index.toString()}
@@ -29,7 +32,7 @@ const styles = StyleSheet.create({
   abilityWrap: {
     paddingTop: 15,
     paddingHorizontal: 15,
-    paddingBottom: 200
+    paddingBottom: 200,
   },
   abilityTitle: {
     color: "#1D1D1D",
@@ -37,8 +40,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   abilityTextItem: {
-    marginTop: 10
-  }
+    marginTop: 10,
+  },
 });
 
 export default Ability;

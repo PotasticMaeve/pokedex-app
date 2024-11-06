@@ -53,3 +53,7 @@ npm install
 npm run android
 ```
 
+## Run Tests
+```bash
+yarn test
+```

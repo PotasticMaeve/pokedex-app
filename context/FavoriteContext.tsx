@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-interface FavoritesContextType {
+type FavoritesContextType = {
   favoriteIds: number[];
   addFavorite: (id: number) => void;
   removeFavorite: (id: number) => void;

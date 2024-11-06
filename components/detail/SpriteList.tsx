@@ -23,12 +23,13 @@ const SpriteList = (props: SpriteListProps) => {
     front_shiny_female: data.front_shiny_female,
   };
   const imagesWithoutNull =
-    images && Object.values(images).filter((item) => typeof item === 'string');
+    images && Object.values(images).filter((item) => typeof item === "string");
 
   return (
     <View style={{ paddingHorizontal: 5 }}>
       <Text style={styles.spriteTitle}>Sprite Gallery</Text>
       <FlatList
+        testID="sprite-gallery"
         data={imagesWithoutNull}
         numColumns={2}
         renderItem={({ item, index }) => {
