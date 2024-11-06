@@ -39,7 +39,7 @@ export const usePokemonQuery = (limit: number) => {
     };
 };
 
-const getPokemonIdFromUrl = (url: string): number => {
+export const getPokemonIdFromUrl = (url: string): number => {
     const regex = /pokemon\/(\d+)/;
     const match = url.match(regex);
     return match ? parseInt(match[1], 10) : 0;

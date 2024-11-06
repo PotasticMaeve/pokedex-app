@@ -5,38 +5,20 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/native-stack/types";
 import { TabNavigatorParamList } from "@/components/navigation/types";
 import CardList from "@/components/CardList";
+import { useFavorites } from "@/context/FavoriteContext";
+import { getPokemonIdFromUrl, usePokemonQuery } from "@/hooks/usePokemonQuery";
+import { useParams } from "@/context/ParamContext";
 
 export default function Favorite() {
   const navigation =
     useNavigation<NativeStackNavigationProp<TabNavigatorParamList>>();
-
-  const data = [
-    {
-      name: "data 1",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png",
-    },
-    {
-      name: "data 2",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png",
-    },
-    {
-      name: "data 3",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png",
-    },
-    {
-      name: "data 4",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png",
-    },
-    {
-      name: "data 5",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png",
-    },
-  ];
+  const { favoriteIds } = useFavorites();
+  const { limit } = useParams();
+  const { pokemons, isLoading, isError, error, pokemonDetailsQueries } =
+    usePokemonQuery(limit);
+  const favoritePokemons = pokemons.filter((pokemon) =>
+    favoriteIds.includes(getPokemonIdFromUrl(pokemon.url))
+  );
 
   return (
     <View style={styles.favoriteWrap}>
@@ -46,7 +28,12 @@ export default function Favorite() {
         onLeftIconPress={() => navigation.goBack()}
       />
       <View style={styles.favoriteBodyWrap}>
-        <CardList data={data} />
+        <CardList
+          pokemons={favoritePokemons}
+          pokemonDetailsQueries={pokemonDetailsQueries}
+          isLoading={isLoading}
+          showLoadMore={false}
+        />
       </View>
     </View>
   );
