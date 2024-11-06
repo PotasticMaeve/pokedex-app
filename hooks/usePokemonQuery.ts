@@ -4,9 +4,9 @@ import { PokemonApiResponse, PokemonDetails } from '../types';
 
 const baseUrl = 'https://pokeapi.co/api/v2/pokemon'
 
-const fetchPokemons = async (): Promise<PokemonApiResponse> => {
+const fetchPokemons = async (limit: number): Promise<PokemonApiResponse> => {
     const response = await axios.get<PokemonApiResponse>(
-        `${baseUrl}?limit=10&offset=0`
+        `${baseUrl}?limit=${limit}&offset=0`
     );
     return response.data;
 };
@@ -16,10 +16,10 @@ export const fetchPokemonDetails = async (id: number): Promise<PokemonDetails> =
     return response.data;
 };
 
-export const usePokemonQuery = () => {
+export const usePokemonQuery = (limit: number) => {
     const { data, isLoading, isError, error } = useQuery({
-        queryKey: ['pokemons'],
-        queryFn: fetchPokemons,
+        queryKey: ['pokemons', limit],
+        queryFn: () => fetchPokemons(limit)
     });
 
     const pokemonDetailsQueries = useQueries({

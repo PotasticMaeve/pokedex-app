@@ -2,7 +2,9 @@ import CardList from "@/components/CardList";
 import Navbar from "@/components/Navbar";
 import SearchInput from "@/components/SearchInput";
 import { TabNavigatorParamList } from "@/components/navigation/types";
+import { SearchProvider } from "@/context/SearchContext";
 import { usePokemonQuery } from "@/hooks/usePokemonQuery";
+import { Pokemon } from "@/types";
 import Feather from "@expo/vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
@@ -12,18 +14,19 @@ import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/n
 export default function HomeScreen() {
   const navigation =
     useNavigation<NativeStackNavigationProp<TabNavigatorParamList>>();
+  const [limit, setLimit] = useState<number>(10);
   const { pokemons, isLoading, isError, error, pokemonDetailsQueries } =
-    usePokemonQuery();
-  const [filteredPokemons, setFilteredPokemons] = useState(pokemons);
+    usePokemonQuery(limit);
+  const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]);
 
   useEffect(() => {
     if (!isLoading && pokemons) {
-      setFilteredPokemons(pokemons);
+      setFilteredPokemons((prevPokemons) => [...prevPokemons, ...pokemons]);
     }
   }, [isLoading, pokemons]);
 
   return (
-    <View>
+    <SearchProvider>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
       <View style={styles.navbarWrap}>
         <Navbar
@@ -33,13 +36,18 @@ export default function HomeScreen() {
         />
       </View>
       <View style={styles.bodyWrap}>
-        <SearchInput pokemons={pokemons} setFilteredPokemons={setFilteredPokemons} />
+        <SearchInput
+          pokemons={pokemons}
+          setFilteredPokemons={setFilteredPokemons}
+        />
         <CardList
           pokemons={filteredPokemons}
           pokemonDetailsQueries={pokemonDetailsQueries}
+          setLimit={setLimit}
+          isLoading={isLoading}
         />
       </View>
-    </View>
+    </SearchProvider>
   );
 }
 

@@ -1,14 +1,8 @@
-import React from "react";
-import {
-  ActivityIndicator,
-  Dimensions,
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import CardItem from "./CardItem";
 import { Pokemon } from "@/types";
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Dimensions, FlatList, StyleSheet, View } from "react-native";
+import CardItem from "./CardItem";
+import { useSearch } from "@/context/SearchContext";
 
 const { width, height } = Dimensions.get("window");
 const itemWidth = (width - 10) / 2;
@@ -16,21 +10,42 @@ const itemWidth = (width - 10) / 2;
 type CardListProps = {
   pokemons: Pokemon[];
   pokemonDetailsQueries: any;
+  setLimit: React.Dispatch<React.SetStateAction<number>>;
+  isLoading: boolean;
 };
 
 const CardList = (props: CardListProps) => {
-  const { pokemons, pokemonDetailsQueries } = props;
+  const { pokemons, pokemonDetailsQueries, setLimit, isLoading } = props;
+  const flatListRef = useRef<FlatList>(null);
+  const [activeLoadMore, setActiveLoadMore] = useState(false);
+  const { search } = useSearch();
 
-  if (pokemons.length === 0) {
-    return (
-      <View style={styles.emptyStateWrap}>
-        <Text style={styles.emptyStateText}>No Pokemon found</Text>
-      </View>
-    );
-  }
+  const loadMorePokemons = () => {
+    setActiveLoadMore(true);
+    setLimit((prevLimit) => prevLimit + 10);
+  };
+
+  useEffect(() => {
+    if (search) {
+      setActiveLoadMore(false);
+    }
+  }, [search]);
+
+  const handleContentSizeChange = (
+    contentWidth: number,
+    contentHeight: number
+  ) => {
+    if (flatListRef.current && activeLoadMore) {
+      flatListRef.current.scrollToOffset({
+        animated: false,
+        offset: contentHeight,
+      });
+    }
+  };
 
   return (
     <FlatList
+      ref={flatListRef}
       data={pokemons}
       numColumns={2}
       renderItem={({ item, index }) => {
@@ -39,20 +54,28 @@ const CardList = (props: CardListProps) => {
         );
 
         const pokemonDetails = pokemonDetailsQuery?.data;
-        return (
-          <View style={styles.cardItemWrap}>
-            {!pokemonDetails ? (
-              <View style={styles.loading}>
-                <ActivityIndicator size="small" color="blue" />
-              </View>
-            ) : (
-              pokemonDetails && <CardItem data={pokemonDetails} key={index} />
-            )}
-          </View>
-        );
+        if (pokemonDetails) {
+          return (
+            <View style={styles.cardItemWrap}>
+              <CardItem data={pokemonDetails} key={index} />
+            </View>
+          );
+        } else return <></>;
       }}
       contentContainerStyle={styles.cardListWrap}
       keyExtractor={(_, index) => index.toString()}
+      ListFooterComponent={
+        <View style={styles.buttonContainer}>
+          {!search && pokemons?.length > 0 && (
+            <Button
+              title={isLoading ? "Loading..." : "Load More"}
+              onPress={loadMorePokemons}
+              disabled={isLoading}
+            />
+          )}
+        </View>
+      }
+      onContentSizeChange={handleContentSizeChange}
     />
   );
 };
@@ -66,20 +89,9 @@ const styles = StyleSheet.create({
     width: itemWidth,
     height: 200,
   },
-  loading: {
-    display: "flex",
-    justifyContent: "center",
+  buttonContainer: {
+    marginTop: 20,
     alignItems: "center",
-    height: "100%",
-  },
-  emptyStateWrap: {
-    height: height,
-    backgroundColor: "white",
-    marginTop: "75%",
-    alignItems: "center",
-  },
-  emptyStateText: {
-    fontSize: 15,
   },
 });
 
