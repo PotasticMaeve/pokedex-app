@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   loading: {
     height: height,
     backgroundColor: "white",
-    marginTop: "75%",
+    marginTop: "70%",
     alignItems: "center",
   },
 });

@@ -1,14 +1,14 @@
+import { Pokemon } from "@/types";
 import React from "react";
 import {
   ActivityIndicator,
+  Button,
   Dimensions,
   FlatList,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
 import CardItem from "./CardItem";
-import { Pokemon } from "@/types";
 
 const { width, height } = Dimensions.get("window");
 const itemWidth = (width - 10) / 2;
@@ -16,15 +16,21 @@ const itemWidth = (width - 10) / 2;
 type CardListProps = {
   pokemons: Pokemon[];
   pokemonDetailsQueries: any;
+  setLimit: React.Dispatch<React.SetStateAction<number>>;
+  isLoading: boolean;
 };
 
 const CardList = (props: CardListProps) => {
-  const { pokemons, pokemonDetailsQueries } = props;
+  const { pokemons, pokemonDetailsQueries, setLimit, isLoading } = props;
 
-  if (pokemons.length === 0) {
+  const loadMorePokemons = () => {
+    setLimit((prevLimit) => prevLimit + 10);
+  };
+
+  if (isLoading) {
     return (
-      <View style={styles.emptyStateWrap}>
-        <Text style={styles.emptyStateText}>No Pokemon found</Text>
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" color="blue" />
       </View>
     );
   }
@@ -39,20 +45,21 @@ const CardList = (props: CardListProps) => {
         );
 
         const pokemonDetails = pokemonDetailsQuery?.data;
-        return (
-          <View style={styles.cardItemWrap}>
-            {!pokemonDetails ? (
-              <View style={styles.loading}>
-                <ActivityIndicator size="small" color="blue" />
-              </View>
-            ) : (
-              pokemonDetails && <CardItem data={pokemonDetails} key={index} />
-            )}
-          </View>
-        );
+        if (pokemonDetails) {
+          return (
+            <View style={styles.cardItemWrap}>
+              <CardItem data={pokemonDetails} key={index} />
+            </View>
+          );
+        } else return <></>;
       }}
       contentContainerStyle={styles.cardListWrap}
       keyExtractor={(_, index) => index.toString()}
+      ListFooterComponent={
+        <View style={styles.buttonContainer}>
+          <Button title="Load More" onPress={loadMorePokemons} />
+        </View>
+      }
     />
   );
 };
@@ -68,18 +75,13 @@ const styles = StyleSheet.create({
   },
   loading: {
     display: "flex",
-    justifyContent: "center",
+    marginTop: "70%",
     alignItems: "center",
-    height: "100%",
-  },
-  emptyStateWrap: {
     height: height,
-    backgroundColor: "white",
-    marginTop: "75%",
-    alignItems: "center",
   },
-  emptyStateText: {
-    fontSize: 15,
+  buttonContainer: {
+    marginTop: 20,
+    alignItems: "center",
   },
 });
 
